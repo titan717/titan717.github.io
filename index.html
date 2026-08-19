@@ -38,20 +38,16 @@
     position: fixed;
     inset: 0;
     z-index: 10000;
-    background: rgba(8, 8, 10, 0.96);
+    background: rgba(8, 8, 10, 0.95);
     backdrop-filter: blur(16px);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
-    opacity: 1;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
   }
 
   #auth-overlay.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    display: none;
   }
 
   .auth-card {
@@ -141,29 +137,23 @@
     display: none;
   }
 
-  /* ---------- Loader Screen ---------- */
+  /* ---------- 5-Second Titan Rage Loading Screen ---------- */
   #loader {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background: linear-gradient(rgba(8, 8, 10, 0.75), rgba(8, 8, 10, 0.88)),
-                url("https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200") center/cover no-repeat;
-    opacity: 1;
+                url("https://motionbgs.com/media/4608/titan-rage.jpg") center/cover no-repeat;
     transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
-  }
-
-  #loader.active {
-    display: flex;
   }
 
   #loader.hidden {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
   }
 
   .loader-title {
@@ -291,7 +281,7 @@
     font-weight: 600;
   }
 
-  /* ---------- Strict Grid Layout ---------- */
+  /* ---------- Strict 3x3 Grid Layout ---------- */
   main {
     max-width: 1300px;
     margin: 0 auto;
@@ -527,18 +517,18 @@
     <p>Please enter your credentials to unlock.</p>
     <div class="auth-field">
       <label for="username">Username</label>
-      <input type="text" id="username" class="auth-input" placeholder="Enter username" autocomplete="username">
+      <input type="text" id="username" class="auth-input" placeholder="Enter username">
     </div>
     <div class="auth-field">
       <label for="password">Password</label>
-      <input type="password" id="password" class="auth-input" placeholder="Enter password" autocomplete="current-password">
+      <input type="password" id="password" class="auth-input" placeholder="Enter password">
     </div>
     <div class="auth-error" id="auth-error">Invalid username or password!</div>
-    <button class="auth-btn" id="loginBtn">Unlock</button>
+    <button class="auth-btn" onclick="authenticate()">Unlock</button>
   </div>
 </div>
 
-<!-- Loader Screen -->
+<!-- Loading Screen -->
 <div id="loader">
   <div class="loader-title">Loading Vault...</div>
   <div class="progress-bar-container">
@@ -566,7 +556,7 @@
       <div class="title" id="lightbox-title"></div>
       <div style="display:flex; gap:10px;">
         <a class="btn btn-open" id="lightbox-open" href="#" target="_blank" rel="noopener noreferrer">Get Wallpaper</a>
-        <button class="lightbox-close" id="lightboxCloseBtn">Close</button>
+        <button class="lightbox-close" onclick="closeLightbox()">Close</button>
       </div>
     </div>
   </div>
@@ -578,15 +568,26 @@
 </footer>
 
 <script>
-  // Clean Data Store
+  // Authentication Logic
+  function authenticate() {
+    const userIn = document.getElementById('username').value;
+    const passIn = document.getElementById('password').value;
+    const errEl = document.getElementById('auth-error');
+
+    if (userIn === "amit" && passIn === "admin@123") {
+      document.getElementById('auth-overlay').classList.add('hidden');
+      startLoadingSequence();
+    } else {
+      errEl.style.display = 'block';
+    }
+  }
+
+  // Allow pressing Enter in password input to unlock
+  document.getElementById('password').addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') authenticate();
+  });
+
   const wallpapers = [
-    {
-      title: "Mikasa Ackerman in Attack on Titan",
-      tag: "Attack on Titan",
-      img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200",
-      fallback: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200",
-      link: "https://motionbgs.com/mikasa-ackerman-in-attack-on-titan"
-    },
     {
       title: "Shingeki No Kyojin",
       tag: "Attack on Titan",
@@ -602,58 +603,72 @@
       link: "https://motionbgs.com/fight-against-thetitans"
     },
     {
+      title: "Mikasa Ackerman",
+      tag: "Attack on Titan",
+      img: "https://motionbgs.com/media/5180/mikasa-aot.jpg",
+      fallback: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200",
+      link: "https://motionbgs.com/mikasa-ackerman-in-attack-on-titan"
+    },
+    {
       title: "Dark King and Crown of Thorns",
       tag: "Fantasy",
-      img: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200",
+      img: "https://motionbgs.com/media/9821/dark-king-and-the-crown-of-thorns.3840x2160.jpg",
       fallback: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200",
       link: "https://motionbgs.com/dark-king-and-the-crown-of-thorns"
     },
     {
       title: "Eren Yeager — Founding Titan",
       tag: "Attack on Titan",
-      img: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200",
+      img: "https://motionbgs.com/media/990/eren-yeager-from-founding-titan-attack-on-titan.jpg",
       fallback: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200",
       link: "https://motionbgs.com/eren-yeager-from-founding-titan-attack-on-titan"
     },
     {
       title: "Shadow King — Sung Jin-Woo",
       tag: "Solo Leveling",
-      img: "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1200",
+      img: "https://motionbgs.com/media/9692/shadow-king-sung-jin-woo.3840x2160.jpg",
       fallback: "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1200",
       link: "https://motionbgs.com/shadow-king-sung-jin-woo"
     },
     {
+      title: "Mikasa (AOT)",
+      tag: "Attack on Titan",
+      img: "https://motionbgs.com/media/5180/mikasa-aot.jpg",
+      fallback: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200",
+      link: "https://motionbgs.com/mikasa-aot"
+    },
+    {
       title: "Titan Rage",
       tag: "Attack on Titan",
-      img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200",
+      img: "https://motionbgs.com/media/4608/titan-rage.jpg",
       fallback: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200",
       link: "https://motionbgs.com/titan-rage"
     },
     {
       title: "Surviving (The Last of Us)",
       tag: "The Last of Us",
-      img: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200",
+      img: "https://motionbgs.com/media/501/surviving-the-last-of-us.jpg",
       fallback: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1200",
       link: "https://motionbgs.com/surviving-the-last-of-us"
     },
     {
       title: "The Arcade (The Last of Us)",
       tag: "The Last of Us",
-      img: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200",
+      img: "https://motionbgs.com/media/583/the-arcade-the-last-of-us.jpg",
       fallback: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200",
       link: "https://motionbgs.com/the-arcade-the-last-of-us"
     },
     {
       title: "Twilight at Mount Fuji",
       tag: "Nature",
-      img: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200",
+      img: "https://motionbgs.com/media/9924/twilight-at-mount-fuji.3840x2160.jpg",
       fallback: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200",
       link: "https://motionbgs.com/twilight-at-mount-fuji"
     },
     {
       title: "Serene Cherry Blossom Tree",
       tag: "Anime",
-      img: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1200",
+      img: "https://motionbgs.com/media/9925/serene-cherry-blossom-tree.3840x2160.jpg",
       fallback: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1200",
       link: "https://motionbgs.com/serene-cherry-blossom-tree"
     },
@@ -704,39 +719,11 @@
   const grid = document.getElementById('wallpaper-grid');
   const filterContainer = document.getElementById('filterContainer');
   const searchInput = document.getElementById('searchInput');
-  const authOverlay = document.getElementById('auth-overlay');
-  const authError = document.getElementById('auth-error');
-  const loader = document.getElementById('loader');
-  const lightbox = document.getElementById('lightbox');
-
   let currentFilter = 'All';
   let searchQuery = '';
 
-  // Auth Handler
-  function authenticate() {
-    const userIn = document.getElementById('username').value.trim();
-    const passIn = document.getElementById('password').value.trim();
-
-    if (userIn === "amit" && passIn === "admin@123") {
-      authOverlay.classList.add('hidden');
-      authError.style.display = 'none';
-      startLoadingSequence();
-    } else {
-      authError.style.display = 'block';
-    }
-  }
-
-  document.getElementById('loginBtn').addEventListener('click', authenticate);
-  document.getElementById('password').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') authenticate();
-  });
-  document.getElementById('username').addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') document.getElementById('password').focus();
-  });
-
-  // Loader Timer
+  // 5-Second (5000ms) Loader Timer (Starts after correct login)
   function startLoadingSequence() {
-    loader.classList.add('active');
     const bar = document.getElementById('progress-bar');
     const text = document.getElementById('progress-text');
     const duration = 5000;
@@ -753,16 +740,14 @@
       if (elapsedTime >= duration) {
         clearInterval(timer);
         setTimeout(() => {
-          loader.classList.add('hidden');
+          document.getElementById('loader').classList.add('hidden');
         }, 200);
       }
     }, intervalTime);
   }
 
-  // Grid & Filter Logic
   function setupFilters() {
     const tags = ['All', ...new Set(wallpapers.map(w => w.tag))];
-    filterContainer.innerHTML = '';
     tags.forEach(tag => {
       const btn = document.createElement('button');
       btn.className = 'filter-btn' + (tag === 'All' ? ' active' : '');
@@ -797,7 +782,7 @@
       card.className = 'card';
       
       card.ondblclick = () => {
-        window.open(item.link, '_blank', 'noopener,noreferrer');
+        window.open(item.link, '_blank');
       };
 
       card.innerHTML = `
@@ -809,21 +794,11 @@
           <div class="title">${item.title}</div>
           <div class="hint">Double-click to open page</div>
           <div class="actions">
-            <button class="btn btn-preview">Preview</button>
-            <a class="btn btn-open" href="${item.link}" target="_blank" rel="noopener noreferrer">Open</a>
+            <button class="btn btn-preview" onclick="event.stopPropagation(); openLightbox('${item.img}', '${item.fallback}', '${item.title.replace(/'/g, "\\'")}', '${item.link}')">Preview</button>
+            <a class="btn btn-open" href="${item.link}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">Open</a>
           </div>
         </div>
       `;
-
-      card.querySelector('.btn-preview').addEventListener('click', (e) => {
-        e.stopPropagation();
-        openLightbox(item.img, item.fallback, item.title, item.link);
-      });
-
-      card.querySelector('.btn-open').addEventListener('click', (e) => {
-        e.stopPropagation();
-      });
-
       grid.appendChild(card);
     });
   }
@@ -833,9 +808,10 @@
     renderGrid();
   });
 
-  // Lightbox Handlers
   function openLightbox(imgUrl, fallbackUrl, title, sourceLink) {
+    const lightbox = document.getElementById('lightbox');
     const imgEl = document.getElementById('lightbox-img');
+    
     imgEl.onerror = function() {
       this.onerror = null;
       this.src = fallbackUrl;
@@ -849,15 +825,14 @@
   }
 
   function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
     lightbox.classList.remove('open');
     setTimeout(() => {
       document.getElementById('lightbox-img').src = '';
     }, 250);
   }
 
-  document.getElementById('lightboxCloseBtn').addEventListener('click', closeLightbox);
-
-  lightbox.addEventListener('click', function(e) {
+  document.getElementById('lightbox').addEventListener('click', function(e) {
     if (e.target === this) closeLightbox();
   });
 
@@ -865,7 +840,6 @@
     if (e.key === 'Escape') closeLightbox();
   });
 
-  // Initial Boot
   setupFilters();
   renderGrid();
 </script>
