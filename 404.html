@@ -31,7 +31,7 @@
             pointer-events: none;
         }
 
-        /* Scale zoom to crop YouTube edges and branding */
+        /* Zoom scale to crop video borders and YouTube branding */
         .bg-video {
             position: absolute;
             top: 50%;
@@ -111,23 +111,23 @@
     <script>
         let player;
 
-        // Initialize YouTube Player with Video ID: 19Dm5FlO66Q
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 videoId: '19Dm5FlO66Q',
                 playerVars: {
                     'autoplay': 1,
+                    'mute': 1,
                     'controls': 0,
                     'showinfo': 0,
                     'rel': 0,
                     'iv_load_policy': 3,
                     'disablekb': 1,
                     'modestbranding': 1,
-                    'loop': 1,
-                    'playlist': '19Dm5FlO66Q'
+                    'playsinline': 1
                 },
                 events: {
-                    'onReady': onPlayerReady
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
@@ -138,12 +138,19 @@
             event.target.playVideo();
         }
 
-        // Single click anywhere on screen enables Fullscreen & Audio
+        // Exact Loop Controller: Restart instantly when ended (State 0)
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                player.seekTo(0);
+                player.playVideo();
+            }
+        }
+
+        // Single click anywhere on screen unmutes audio and forces native Fullscreen
         document.body.addEventListener('click', function(e) {
-            // Avoid triggering when clicking the Go Back link directly
             if (e.target.tagName.toLowerCase() === 'a') return;
 
-            // 1. Unmute and play sound
+            // 1. Unmute audio
             if (player && player.unMute) {
                 player.unMute();
                 player.setVolume(100);
