@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Rumbling</title>
+    <title>404 - Not Found</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +17,7 @@
             overflow: hidden;
             background-color: #000000;
             cursor: pointer;
+            user-select: none;
         }
 
         /* Fullscreen Viewport Video Container */
@@ -44,7 +45,7 @@
             pointer-events: none;
         }
 
-        /* Subtle bottom gradient overlay for the Go Back link */
+        /* Gradient overlay for text visibility */
         .overlay {
             position: fixed;
             top: 0;
@@ -52,7 +53,7 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: linear-gradient(180deg, transparent 75%, rgba(0, 0, 0, 0.85) 100%);
+            background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 60%, rgba(0, 0, 0, 0.85) 100%);
             pointer-events: none;
         }
 
@@ -65,7 +66,7 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            padding: 30px 20px;
+            padding: 40px 20px;
         }
 
         .btn-goback {
@@ -95,7 +96,7 @@
 </head>
 <body>
 
-    <!-- Video Container with YouTube API enabled -->
+    <!-- Video Container -->
     <div class="video-container">
         <div id="player"></div>
     </div>
@@ -110,20 +111,22 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         let player;
+        let isStarted = false;
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
                 videoId: '19Dm5FlO66Q',
                 playerVars: {
                     'autoplay': 1,
-                    'mute': 1,
                     'controls': 0,
                     'showinfo': 0,
                     'rel': 0,
                     'iv_load_policy': 3,
                     'disablekb': 1,
                     'modestbranding': 1,
-                    'playsinline': 1
+                    'playsinline': 1,
+                    'enablejsapi': 1,
+                    'origin': window.location.origin || '*'
                 },
                 events: {
                     'onReady': onPlayerReady,
@@ -135,6 +138,9 @@
         function onPlayerReady(event) {
             const iframe = document.getElementById('player');
             iframe.classList.add('bg-video');
+
+            // Force mute before attempting play (Required by Browser Autoplay Policy)
+            event.target.mute();
             event.target.playVideo();
         }
 
@@ -146,24 +152,31 @@
             }
         }
 
-        // Single click anywhere on screen unmutes audio and forces native Fullscreen
+        // User click unlocks audio, triggers fullscreen, and forces play if blocked on load
         document.body.addEventListener('click', function(e) {
             if (e.target.tagName.toLowerCase() === 'a') return;
 
-            // 1. Unmute audio
-            if (player && player.unMute) {
-                player.unMute();
-                player.setVolume(100);
+            if (player) {
+                // Ensure video is playing
+                player.playVideo();
+
+                // Unmute audio on first user click
+                if (player.isMuted()) {
+                    player.unMute();
+                    player.setVolume(100);
+                }
             }
 
-            // 2. Hide Taskbar and Browser Tabs (Native Fullscreen)
+            // Hide Taskbar and Browser Tabs (Native Fullscreen)
             const docEl = document.documentElement;
-            if (docEl.requestFullscreen) {
-                docEl.requestFullscreen();
-            } else if (docEl.webkitRequestFullscreen) {
-                docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) {
-                docEl.msRequestFullscreen();
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                if (docEl.requestFullscreen) {
+                    docEl.requestFullscreen();
+                } else if (docEl.webkitRequestFullscreen) {
+                    docEl.webkitRequestFullscreen();
+                } else if (docEl.msRequestFullscreen) {
+                    docEl.msRequestFullscreen();
+                }
             }
         });
     </script>
