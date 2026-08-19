@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page Trampled</title>
+    <title>The Rumbling</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
             color: #ffffff;
         }
 
-        /* Video Container - Cover the whole viewport */
+        /* Fullscreen Viewport Video Container */
         .video-container {
             position: fixed;
             top: 0;
@@ -32,7 +32,7 @@
             pointer-events: none;
         }
 
-        /* YouTube iFrame Scaled to remove black bars */
+        /* Heavy scale zoom to crop out any potential player artifacts */
         .bg-video {
             position: absolute;
             top: 50%;
@@ -41,12 +41,12 @@
             height: 56.25vw; /* 16:9 Aspect Ratio */
             min-height: 100vh;
             min-width: 177.77vh;
-            transform: translate(-50%, -50%) scale(1.35);
+            transform: translate(-50%, -50%) scale(1.6); /* Cropped extra edges */
             pointer-events: none;
-            filter: brightness(0.7) contrast(1.15);
+            filter: brightness(0.85) contrast(1.1);
         }
 
-        /* Subtle overlay to make text pop */
+        /* Dark Vignette to keep bottom UI readable */
         .overlay {
             position: fixed;
             top: 0;
@@ -54,86 +54,64 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.85) 90%);
+            background: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.9) 100%);
             pointer-events: none;
         }
 
-        /* Center Content UI */
+        /* UI Container */
         .container {
             position: relative;
             z-index: 3;
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
         }
 
-        .header-content {
-            margin-top: auto;
-            margin-bottom: auto;
-        }
-
-        .error-code {
-            font-size: clamp(6rem, 16vw, 12rem);
-            font-weight: 900;
-            letter-spacing: 0.05em;
-            line-height: 1;
-            color: #ffffff;
-            text-shadow: 0 0 30px rgba(239, 68, 68, 0.8), 0 0 80px rgba(0, 0, 0, 0.9);
-        }
-
-        h1 {
-            font-size: clamp(1rem, 2.5vw, 1.6rem);
-            font-weight: 600;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: #fca5a5;
-            margin-top: 10px;
-            text-shadow: 0 0 15px rgba(239, 68, 68, 0.9);
-        }
-
-        /* Bottom "Go Back" Navigation */
+        /* Bottom Controls Container */
         .bottom-nav {
-            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
         }
 
-        .btn-goback {
+        .btn {
             display: inline-block;
-            padding: 14px 38px;
-            font-size: 0.95rem;
+            padding: 14px 32px;
+            font-size: 0.85rem;
             font-weight: 700;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: #ffffff;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(239, 68, 68, 0.8);
             border-radius: 2px;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(5px);
+            cursor: pointer;
         }
 
-        .btn-goback:hover {
+        .btn:hover {
             color: #000000;
             background-color: #ef4444;
             border-color: #ef4444;
             box-shadow: 0 0 30px rgba(239, 68, 68, 0.9);
-            transform: translateY(-2px);
         }
     </style>
 </head>
-<body>
+<body onclick="enableFullscreen()">
 
-    <!-- Background Video Clip from https://www.youtube.com/watch?v=9TCphIzY--g starting at 21:00 (1260 seconds) -->
+    <!-- Starts at 17:35 (1055 seconds) and loops continuously -->
     <div class="video-container">
         <iframe 
             class="bg-video" 
-            src="https://www.youtube-nocookie.com/embed/9TCphIzY--g?start=1260&autoplay=1&mute=1&loop=1&playlist=9TCphIzY--g&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1" 
-            title="Attack on Titan - Rumbling Speech Video Background" 
+            src="https://www.youtube-nocookie.com/embed/9TCphIzY--g?start=1055&autoplay=1&mute=1&loop=1&playlist=9TCphIzY--g&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1" 
+            title="Attack on Titan Video Background" 
             frameborder="0" 
             allow="autoplay; encrypted-media">
         </iframe>
@@ -142,16 +120,28 @@
     <div class="overlay"></div>
 
     <div class="container">
-        <div class="header-content">
-            <div class="error-code">404</div>
-            <h1>THIS PAGE HAS BEEN TRAMPLED</h1>
-        </div>
-
-        <!-- Bottom Go Back Action -->
+        <!-- Bottom Action Bar -->
         <div class="bottom-nav">
-            <a href="javascript:history.back()" class="btn-goback">← Go Back</a>
+            <button class="btn" onclick="enableFullscreen()">🖥️ Fullscreen (Hide Tabs/Taskbar)</button>
+            <a href="javascript:history.back()" class="btn">← Go Back</a>
         </div>
     </div>
+
+    <script>
+        // Removes taskbar and browser tab bar by triggering Native Browser Fullscreen Mode
+        function enableFullscreen() {
+            const docEl = document.documentElement;
+            if (docEl.requestFullscreen) {
+                docEl.requestFullscreen();
+            } else if (docEl.mozRequestFullScreen) { /* Firefox */
+                docEl.mozRequestFullScreen();
+            } else if (docEl.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                docEl.webkitRequestFullscreen();
+            } else if (docEl.msRequestFullscreen) { /* IE/Edge */
+                docEl.msRequestFullscreen();
+            }
+        }
+    </script>
 
 </body>
 </html>
