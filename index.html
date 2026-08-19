@@ -6,16 +6,20 @@
 <title>Cool Website by Amit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
   :root {
-    --bg: #0a0a0c;
-    --surface: #141417;
-    --border: #27272a;
-    --border-hover: #52525b;
-    --text: #f4f4f5;
-    --text-muted: #a1a1aa;
+    --bg: #08080a;
+    --surface: #121216;
+    --surface-hover: #1a1a20;
+    --border: #23232a;
+    --border-hover: #434350;
+    --text: #f4f4f6;
+    --text-muted: #8e8e9a;
     --accent: #ffffff;
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,22 +27,23 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     min-height: 100vh;
     overflow-x: hidden;
   }
 
-  /* ---------- Game Loading Screen ---------- */
+  /* ---------- 5-Second Titan Rage Loading Screen ---------- */
   #loader {
     position: fixed;
     inset: 0;
-    background: var(--bg);
     z-index: 9999;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.5s ease, visibility 0.5s;
+    background: linear-gradient(rgba(8, 8, 10, 0.75), rgba(8, 8, 10, 0.88)),
+                url("https://motionbgs.com/media/4608/titan-rage.jpg") center/cover no-repeat;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
   }
 
   #loader.hidden {
@@ -47,33 +52,41 @@
   }
 
   .loader-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-family: var(--font-heading);
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: 0.08em;
     margin-bottom: 24px;
     text-transform: uppercase;
-    animation: pulse 1.2s infinite alternate;
+    color: var(--text);
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
   }
 
   .progress-bar-container {
-    width: 260px;
-    height: 4px;
-    background: var(--border);
-    border-radius: 4px;
+    width: clamp(260px, 80vw, 340px);
+    height: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
     overflow: hidden;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .progress-bar {
     height: 100%;
     width: 0%;
     background: var(--text);
-    transition: width 0.15s ease;
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.9);
+    transition: width 0.03s linear;
   }
 
-  @keyframes pulse {
-    0% { opacity: 0.5; }
-    100% { opacity: 1; }
+  .progress-text {
+    margin-top: 14px;
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.1em;
   }
 
   /* ---------- Header ---------- */
@@ -83,10 +96,10 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(32px, 5.5vw, 60px);
+    font-family: var(--font-heading);
+    font-size: clamp(34px, 5.5vw, 64px);
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     color: var(--text);
     margin-bottom: 12px;
     text-transform: uppercase;
@@ -97,36 +110,38 @@
     font-size: 15px;
     max-width: 550px;
     margin: 0 auto;
-    line-height: 1.5;
+    line-height: 1.6;
+    font-weight: 400;
   }
 
   /* ---------- Controls & Filters ---------- */
   .controls {
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
-    padding: 10px 24px 30px;
+    padding: 10px 24px 36px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
     align-items: center;
   }
 
   .search-box {
     width: 100%;
-    max-width: 420px;
-    padding: 12px 20px;
+    max-width: 440px;
+    padding: 14px 22px;
     border-radius: 30px;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
   .search-box:focus {
     border-color: var(--border-hover);
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.03);
   }
 
   .filters {
@@ -140,10 +155,11 @@
     background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    padding: 8px 16px;
+    padding: 8px 18px;
     border-radius: 20px;
     font-size: 13px;
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-body);
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
   }
@@ -160,15 +176,24 @@
     font-weight: 600;
   }
 
-  /* ---------- Grid Layout ---------- */
+  /* ---------- Strict 3x3 Grid Layout ---------- */
   main {
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
     padding: 0 24px 80px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 24px;
+    /* Forces 3 columns on desktop screens */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
     min-height: 40vh;
+  }
+
+  @media (max-width: 1024px) {
+    main { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 640px) {
+    main { grid-template-columns: 1fr; }
   }
 
   .empty-state {
@@ -179,7 +204,7 @@
     padding: 60px 20px;
   }
 
-  /* ---------- Card ---------- */
+  /* ---------- Card Styling ---------- */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -187,14 +212,15 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.25s ease, border-color 0.25s ease;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
     cursor: pointer;
     user-select: none;
   }
 
   .card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     border-color: var(--border-hover);
+    background: var(--surface-hover);
   }
 
   .thumb-wrap {
@@ -208,31 +234,32 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .card:hover .thumb-wrap img {
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 
   .tag {
     position: absolute;
     top: 12px;
     left: 12px;
-    background: rgba(10, 10, 12, 0.85);
-    backdrop-filter: blur(4px);
+    background: rgba(8, 8, 10, 0.85);
+    backdrop-filter: blur(6px);
     border: 1px solid var(--border);
     color: var(--text);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.05em;
+    font-size: 10px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     padding: 5px 12px;
     border-radius: 20px;
   }
 
   .card-body {
-    padding: 18px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 14px;
@@ -240,23 +267,25 @@
   }
 
   .title {
-    font-family: 'Syne', sans-serif;
-    font-size: 17px;
+    font-family: var(--font-heading);
+    font-size: 18px;
     font-weight: 700;
     color: var(--text);
-    line-height: 1.3;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
   }
 
   .hint {
     font-size: 11px;
     color: var(--text-muted);
     margin-top: -6px;
+    font-weight: 500;
   }
 
   .actions {
     margin-top: auto;
     display: flex;
-    gap: 8px;
+    gap: 10px;
   }
 
   .btn {
@@ -264,9 +293,9 @@
     text-align: center;
     text-decoration: none;
     font-size: 13px;
-    font-weight: 500;
-    padding: 9px 12px;
-    border-radius: 8px;
+    font-weight: 600;
+    padding: 10px 14px;
+    border-radius: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 1px solid transparent;
@@ -280,7 +309,7 @@
 
   .btn-preview:hover {
     border-color: var(--text-muted);
-    background: rgba(255, 255, 255, 0.04);
+    background: rgba(255, 255, 255, 0.05);
   }
 
   .btn-open {
@@ -296,15 +325,15 @@
   .lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(10, 10, 12, 0.94);
-    backdrop-filter: blur(12px);
+    background: rgba(8, 8, 10, 0.95);
+    backdrop-filter: blur(14px);
     display: none;
     align-items: center;
     justify-content: center;
     padding: 24px;
     z-index: 1000;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.3s ease;
   }
 
   .lightbox.open { 
@@ -317,7 +346,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
   }
 
   .lightbox img {
@@ -344,11 +373,11 @@
     background: transparent;
     color: var(--text);
     border: 1px solid var(--border);
-    padding: 9px 20px;
-    border-radius: 8px;
+    padding: 10px 22px;
+    border-radius: 10px;
     cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
+    font-family: var(--font-body);
+    font-weight: 600;
     transition: border-color 0.2s ease;
   }
 
@@ -358,16 +387,16 @@
 
   footer {
     border-top: 1px solid var(--border);
-    padding: 30px 20px 50px;
+    padding: 40px 20px 60px;
     text-align: center;
     color: var(--text-muted);
     font-size: 13px;
   }
 
   .footer-credit {
-    margin-top: 10px;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
+    margin-top: 12px;
+    font-family: var(--font-heading);
+    font-weight: 800;
     font-size: 16px;
     color: var(--text);
     text-transform: uppercase;
@@ -382,6 +411,7 @@
   <div class="progress-bar-container">
     <div class="progress-bar" id="progress-bar"></div>
   </div>
+  <div class="progress-text" id="progress-text">0%</div>
 </div>
 
 <header>
@@ -416,7 +446,6 @@
 
 <script>
   const wallpapers = [
-    // Previous wallpapers
     {
       title: "Dark King and Crown of Thorns",
       tag: "Fantasy",
@@ -480,7 +509,6 @@
       fallback: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1200",
       link: "https://motionbgs.com/serene-cherry-blossom-tree"
     },
-    // Added links
     {
       title: "Minecraft Northern Light",
       tag: "Minecraft",
@@ -531,24 +559,30 @@
   let currentFilter = 'All';
   let searchQuery = '';
 
-  // Loading animation
+  // 5-Second (5000ms) Loader Timer
   window.addEventListener('load', () => {
-    let progress = 0;
     const bar = document.getElementById('progress-bar');
-    const interval = setInterval(() => {
-      progress += Math.floor(Math.random() * 25) + 15;
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
+    const text = document.getElementById('progress-text');
+    const duration = 5000;
+    const intervalTime = 20;
+    let elapsedTime = 0;
+
+    const timer = setInterval(() => {
+      elapsedTime += intervalTime;
+      let progress = Math.min(Math.floor((elapsedTime / duration) * 100), 100);
+
+      bar.style.width = progress + '%';
+      text.textContent = progress + '%';
+
+      if (elapsedTime >= duration) {
+        clearInterval(timer);
         setTimeout(() => {
           document.getElementById('loader').classList.add('hidden');
-        }, 300);
+        }, 200);
       }
-      bar.style.width = progress + '%';
-    }, 100);
+    }, intervalTime);
   });
 
-  // Filter Bar Setup
   function setupFilters() {
     const tags = ['All', ...new Set(wallpapers.map(w => w.tag))];
     tags.forEach(tag => {
@@ -565,7 +599,6 @@
     });
   }
 
-  // Render Grid
   function renderGrid() {
     grid.innerHTML = '';
 
@@ -585,7 +618,6 @@
       const card = document.createElement('div');
       card.className = 'card';
       
-      // QOL: Double Click card opens link directly
       card.ondblclick = () => {
         window.open(item.link, '_blank');
       };
@@ -613,7 +645,6 @@
     renderGrid();
   });
 
-  // Lightbox Modal
   function openLightbox(imgUrl, fallbackUrl, title, sourceLink) {
     const lightbox = document.getElementById('lightbox');
     const imgEl = document.getElementById('lightbox-img');
