@@ -31,7 +31,7 @@
             pointer-events: none;
         }
 
-        /* Heavy scale zoom to aggressively crop edges and player branding */
+        /* Scale zoom to crop YouTube edges and branding */
         .bg-video {
             position: absolute;
             top: 50%;
@@ -44,7 +44,7 @@
             pointer-events: none;
         }
 
-        /* Subtle bottom gradient overlay for the Back button */
+        /* Subtle bottom gradient overlay for the Go Back link */
         .overlay {
             position: fixed;
             top: 0;
@@ -52,7 +52,7 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: linear-gradient(180deg, transparent 75%, rgba(0, 0, 0, 0.8) 100%);
+            background: linear-gradient(180deg, transparent 75%, rgba(0, 0, 0, 0.85) 100%);
             pointer-events: none;
         }
 
@@ -111,12 +111,11 @@
     <script>
         let player;
 
-        // Initialize the YouTube player
+        // Initialize YouTube Player with Video ID: 19Dm5FlO66Q
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('player', {
-                videoId: '9TCphIzY--g',
+                videoId: '19Dm5FlO66Q',
                 playerVars: {
-                    'start': 1055,        // Start at 17:35
                     'autoplay': 1,
                     'controls': 0,
                     'showinfo': 0,
@@ -125,7 +124,7 @@
                     'disablekb': 1,
                     'modestbranding': 1,
                     'loop': 1,
-                    'playlist': '9TCphIzY--g'
+                    'playlist': '19Dm5FlO66Q'
                 },
                 events: {
                     'onReady': onPlayerReady
@@ -134,13 +133,12 @@
         }
 
         function onPlayerReady(event) {
-            // Apply frame styling to match the background video
             const iframe = document.getElementById('player');
             iframe.classList.add('bg-video');
             event.target.playVideo();
         }
 
-        // Single click anywhere on screen enables Fullscreen & Audio (Bypasses Browser Restrictions)
+        // Single click anywhere on screen enables Fullscreen & Audio
         document.body.addEventListener('click', function(e) {
             // Avoid triggering when clicking the Go Back link directly
             if (e.target.tagName.toLowerCase() === 'a') return;
