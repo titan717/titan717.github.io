@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - The Rumbling</title>
+    <title>404 - Founding Titan Eren Yeager</title>
     <style>
         * {
             margin: 0;
@@ -16,83 +16,96 @@
             width: 100%;
             font-family: 'Cinzel', 'Times New Roman', serif;
             overflow: hidden;
-            background-color: #030202;
+            background-color: #000000;
             color: #f8fafc;
         }
 
-        /* Apocalyptic Red & Orange Background */
-        .wallpaper {
+        /* High Resolution Artwork Layer */
+        .wallpaper-bg {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 1;
-            background: 
-                radial-gradient(circle at 50% 100%, rgba(239, 68, 68, 0.4) 0%, rgba(185, 28, 28, 0.2) 40%, #030202 90%);
+            background: url('https://images6.alphacoders.com/132/thumb-1920-1328670.jpeg') center center / cover no-repeat;
+            filter: brightness(0.7) contrast(1.15);
+            transition: transform 0.1s ease-out;
         }
 
-        /* Wall Colossal Titans Marching Silhouette Layer */
-        .titans-marching {
-            position: absolute;
-            bottom: 0;
-            width: 200%;
-            height: 35vh;
-            background: 
-                repeating-linear-gradient(
-                    90deg,
-                    #050303 0px,
-                    #050303 30px,
-                    transparent 30px,
-                    transparent 35px,
-                    #080404 35px,
-                    #080404 70px
-                );
-            clip-path: polygon(
-                0% 20%, 3% 15%, 6% 22%, 9% 18%, 12% 25%, 15% 15%, 18% 20%, 
-                21% 16%, 24% 22%, 27% 18%, 30% 24%, 33% 15%, 36% 20%, 39% 17%, 
-                42% 22%, 45% 15%, 48% 21%, 51% 16%, 54% 23%, 57% 18%, 60% 24%, 
-                63% 15%, 66% 20%, 69% 17%, 72% 22%, 75% 15%, 78% 21%, 81% 16%, 
-                84% 23%, 87% 18%, 90% 24%, 93% 15%, 96% 20%, 100% 18%, 
-                100% 100%, 0% 100%
-            );
-            opacity: 0.85;
-            animation: march 20s linear infinite;
-        }
-
-        /* Rising Heat Steam & Dust Smoke */
-        .steam-cloud {
-            position: absolute;
-            bottom: -50px;
-            width: 100%;
-            height: 45vh;
-            background: linear-gradient(0deg, rgba(239, 68, 68, 0.3) 0%, rgba(249, 115, 22, 0.15) 50%, transparent 100%);
-            filter: blur(20px);
-            animation: pulse-steam 2.5s ease-in-out infinite alternate;
-        }
-
-        /* Glowing Red Dust Embers */
-        .embers {
-            position: absolute;
+        /* Ambient Glow & Shadow Overlays */
+        .overlay-vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            z-index: 2;
+            background: 
+                radial-gradient(circle at 50% 50%, transparent 20%, rgba(0, 0, 0, 0.85) 90%),
+                linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 40%, rgba(185, 28, 28, 0.3) 100%);
+            pointer-events: none;
+        }
+
+        /* Animated Green Titan Eyes Glow Layer */
+        .eyes-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            background: radial-gradient(circle at 50% 28%, rgba(34, 197, 94, 0.25) 0%, transparent 25%);
+            mix-blend-mode: screen;
+            animation: pulse-eyes 3s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        /* Rising Heat Smoke & Steam */
+        .steam-smoke {
+            position: fixed;
+            bottom: -20%;
+            left: 0;
+            width: 100%;
+            height: 60vh;
+            z-index: 4;
+            background: linear-gradient(0deg, rgba(239, 68, 68, 0.2) 0%, rgba(0,0,0,0) 100%);
+            filter: blur(25px);
+            animation: pulse-steam 4s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        /* Floating Crimson Embers Particle Overlay */
+        .embers {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
             background-image: 
                 radial-gradient(2px 2px at 20px 30px, #fca5a5, rgba(0,0,0,0)),
                 radial-gradient(3px 3px at 80px 120px, #ef4444, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 150px 60px, #f97316, rgba(0,0,0,0)),
-                radial-gradient(2.5px 2.5px at 220px 200px, #fef08a, rgba(0,0,0,0));
+                radial-gradient(1.5px 1.5px at 150px 60px, #22c55e, rgba(0,0,0,0)),
+                radial-gradient(2.5px 2.5px at 220px 200px, #f97316, rgba(0,0,0,0));
             background-repeat: repeat;
-            background-size: 300px 300px;
-            opacity: 0.8;
-            animation: float-embers 6s infinite linear;
+            background-size: 350px 350px;
+            opacity: 0.85;
+            animation: float-embers 8s infinite linear;
+            pointer-events: none;
         }
 
-        /* Constant Screen Rumble / Earth-Shaking */
-        .rumble-screen {
-            animation: rumbling-earth 0.15s infinite alternate ease-in-out;
+        /* Lightning Canvas & Flash Overlays */
+        #lightning-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9;
+            pointer-events: none;
         }
 
-        /* Lightning Flash Layer */
         .lightning-flash {
             position: fixed;
             top: 0;
@@ -105,20 +118,15 @@
             pointer-events: none;
         }
 
-        #lightning-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9;
-            pointer-events: none;
+        /* Ambient Screen Rumbling */
+        .ambient-rumble {
+            animation: rumbling-earth 0.12s infinite alternate ease-in-out;
         }
 
-        /* Content Area */
+        /* Content Container */
         .container {
             position: relative;
-            z-index: 2;
+            z-index: 6;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -126,7 +134,6 @@
             align-items: center;
             text-align: center;
             padding: 0 20px;
-            background: radial-gradient(circle at 50% 50%, transparent 10%, rgba(3, 2, 2, 0.85) 75%);
         }
 
         .errorCode {
@@ -136,9 +143,9 @@
             line-height: 1;
             color: #ffffff;
             text-shadow: 
-                0 0 20px rgba(239, 68, 68, 0.9),
-                0 0 50px rgba(249, 115, 22, 0.6),
-                0 0 100px rgba(185, 28, 28, 0.5);
+                0 0 20px rgba(34, 197, 94, 0.8),
+                0 0 50px rgba(239, 68, 68, 0.6),
+                0 0 100px rgba(0, 0, 0, 0.9);
             margin-bottom: 5px;
         }
 
@@ -149,94 +156,103 @@
             text-transform: uppercase;
             color: #fca5a5;
             margin-bottom: 35px;
-            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.7);
         }
 
         .btn {
             display: inline-block;
-            padding: 14px 38px;
-            font-size: 0.85rem;
+            padding: 16px 42px;
+            font-size: 0.9rem;
             font-weight: 700;
             letter-spacing: 0.25em;
             text-transform: uppercase;
             color: #fef2f2;
-            background-color: rgba(24, 9, 9, 0.7);
-            border: 1px solid rgba(239, 68, 68, 0.6);
+            background-color: rgba(10, 5, 5, 0.75);
+            border: 1px solid rgba(239, 68, 68, 0.7);
             border-radius: 2px;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.25);
-            backdrop-filter: blur(5px);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
+            backdrop-filter: blur(8px);
             cursor: pointer;
         }
 
         .btn:hover {
-            color: #030202;
-            background-color: #ef4444;
-            border-color: #ef4444;
-            box-shadow: 0 0 40px rgba(239, 68, 68, 0.9);
+            color: #000000;
+            background-color: #22c55e;
+            border-color: #22c55e;
+            box-shadow: 0 0 45px rgba(34, 197, 94, 0.9);
             transform: translateY(-2px);
         }
 
         /* Animations */
-        @keyframes march {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
+        @keyframes pulse-eyes {
+            0% { opacity: 0.2; transform: scale(0.95); }
+            100% { opacity: 0.7; transform: scale(1.05); }
         }
 
         @keyframes pulse-steam {
-            0% { opacity: 0.4; transform: scaleY(1); }
-            100% { opacity: 0.8; transform: scaleY(1.2); }
+            0% { opacity: 0.3; transform: translateY(0); }
+            100% { opacity: 0.7; transform: translateY(-30px); }
         }
 
         @keyframes float-embers {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-300px); }
+            100% { transform: translateY(-350px); }
         }
 
         @keyframes rumbling-earth {
             0% { transform: translate(1px, 1px) rotate(0deg); }
-            50% { transform: translate(-1px, -2px) rotate(-0.5deg); }
-            100% { transform: translate(-2px, 1px) rotate(0.5deg); }
+            50% { transform: translate(-1px, -1px) rotate(-0.3deg); }
+            100% { transform: translate(-1px, 1px) rotate(0.3deg); }
         }
 
         @keyframes intense-shake {
-            10%, 90% { transform: translate3d(-6px, 4px, 0); }
-            20%, 80% { transform: translate3d(8px, -8px, 0); }
-            30%, 50%, 70% { transform: translate3d(-12px, 10px, 0); }
-            40%, 60% { transform: translate3d(12px, -10px, 0); }
+            10%, 90% { transform: translate3d(-8px, 6px, 0); }
+            20%, 80% { transform: translate3d(10px, -10px, 0); }
+            30%, 50%, 70% { transform: translate3d(-14px, 12px, 0); }
+            40%, 60% { transform: translate3d(14px, -12px, 0); }
         }
 
         @keyframes flash-anim {
             0% { opacity: 1; background: #fef08a; }
             20% { opacity: 1; background: #ffffff; }
-            100% { opacity: 0; background: #ef4444; }
+            100% { opacity: 0; background: #22c55e; }
         }
     </style>
 </head>
-<body class="rumble-screen">
+<body class="ambient-rumble">
 
-    <div class="wallpaper">
-        <div class="embers"></div>
-        <div class="titans-marching"></div>
-        <div class="steam-cloud"></div>
-    </div>
+    <div class="wallpaper-bg" id="bg"></div>
+    <div class="overlay-vignette"></div>
+    <div class="eyes-glow"></div>
+    <div class="steam-smoke"></div>
+    <div class="embers"></div>
 
     <div class="lightning-flash" id="flash"></div>
     <svg id="lightning-canvas"></svg>
 
     <div class="container">
         <div class="errorCode">404</div>
-        <h1>BEWARE. THE RUMBLING HAS BEGUN.</h1>
-        <a href="/" class="btn" id="rumbleBtn">Flee To Safety</a>
+        <h1>I WILL KEEP MOVING FORWARD.</h1>
+        <a href="/" class="btn" id="transformBtn">Flee To Safety</a>
     </div>
 
     <script>
-        const btn = document.getElementById('rumbleBtn');
+        const btn = document.getElementById('transformBtn');
         const flash = document.getElementById('flash');
         const body = document.body;
+        const bg = document.getElementById('bg');
         const svg = document.getElementById('lightning-canvas');
 
+        // Subtle Mouse Parallax Effect
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 15;
+            const y = (e.clientY / window.innerHeight - 0.5) * 15;
+            bg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+        });
+
+        // Click Transformation Lightning Strike
         btn.addEventListener('click', function(e) {
             e.preventDefault();
             
@@ -244,7 +260,6 @@
             const targetX = rect.left + rect.width / 2;
             const targetY = rect.top + rect.height / 2;
 
-            // Trigger extreme earthquake shake & strike flash
             body.style.animation = 'intense-shake 0.8s cubic-bezier(.36,.07,.19,.97) both';
 
             flash.style.animation = 'none';
@@ -261,7 +276,7 @@
         function drawTitanLightning(targetX, targetY) {
             svg.innerHTML = '';
             
-            for (let b = 0; b < 4; b++) {
+            for (let b = 0; b < 5; b++) {
                 let startX = targetX + (Math.random() * 300 - 150);
                 let startY = 0;
                 let pathStr = `M ${startX} ${startY}`;
@@ -285,8 +300,8 @@
                 path.setAttribute("d", pathStr);
                 path.setAttribute("fill", "none");
                 path.setAttribute("stroke", b % 2 === 0 ? "#ffffff" : "#fef08a");
-                path.setAttribute("stroke-width", b === 0 ? "7" : "3");
-                path.setAttribute("filter", "drop-shadow(0 0 15px #ef4444)");
+                path.setAttribute("stroke-width", b === 0 ? "8" : "3");
+                path.setAttribute("filter", "drop-shadow(0 0 18px #22c55e)");
                 
                 svg.appendChild(path);
             }
