@@ -14,10 +14,9 @@
         body, html {
             height: 100%;
             width: 100%;
-            font-family: 'Cinzel', 'Times New Roman', serif;
             overflow: hidden;
             background-color: #000000;
-            color: #ffffff;
+            cursor: pointer;
         }
 
         /* Fullscreen Viewport Video Container */
@@ -32,7 +31,7 @@
             pointer-events: none;
         }
 
-        /* Heavy scale zoom to crop out any potential player artifacts */
+        /* Heavy scale zoom to aggressively crop edges and player branding */
         .bg-video {
             position: absolute;
             top: 50%;
@@ -41,12 +40,11 @@
             height: 56.25vw; /* 16:9 Aspect Ratio */
             min-height: 100vh;
             min-width: 177.77vh;
-            transform: translate(-50%, -50%) scale(1.6); /* Cropped extra edges */
+            transform: translate(-50%, -50%) scale(1.6);
             pointer-events: none;
-            filter: brightness(0.85) contrast(1.1);
         }
 
-        /* Dark Vignette to keep bottom UI readable */
+        /* Subtle bottom gradient overlay for the Back button */
         .overlay {
             position: fixed;
             top: 0;
@@ -54,7 +52,7 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.9) 100%);
+            background: linear-gradient(180deg, transparent 75%, rgba(0, 0, 0, 0.8) 100%);
             pointer-events: none;
         }
 
@@ -67,80 +65,102 @@
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
-            text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
         }
 
-        /* Bottom Controls Container */
-        .bottom-nav {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .btn {
+        .btn-goback {
             display: inline-block;
-            padding: 14px 32px;
+            padding: 12px 30px;
             font-size: 0.85rem;
             font-weight: 700;
+            font-family: 'Cinzel', 'Times New Roman', serif;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             color: #ffffff;
-            background-color: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(239, 68, 68, 0.8);
+            background-color: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(239, 68, 68, 0.7);
             border-radius: 2px;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(5px);
-            cursor: pointer;
+            backdrop-filter: blur(4px);
         }
 
-        .btn:hover {
+        .btn-goback:hover {
             color: #000000;
             background-color: #ef4444;
             border-color: #ef4444;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.9);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.9);
         }
     </style>
 </head>
-<body onclick="enableFullscreen()">
+<body>
 
-    <!-- Starts at 17:35 (1055 seconds) and loops continuously -->
+    <!-- Video Container with YouTube API enabled -->
     <div class="video-container">
-        <iframe 
-            class="bg-video" 
-            src="https://www.youtube-nocookie.com/embed/9TCphIzY--g?start=1055&autoplay=1&mute=1&loop=1&playlist=9TCphIzY--g&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1" 
-            title="Attack on Titan Video Background" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media">
-        </iframe>
+        <div id="player"></div>
     </div>
 
     <div class="overlay"></div>
 
     <div class="container">
-        <!-- Bottom Action Bar -->
-        <div class="bottom-nav">
-            <button class="btn" onclick="enableFullscreen()">🖥️ Fullscreen (Hide Tabs/Taskbar)</button>
-            <a href="javascript:history.back()" class="btn">← Go Back</a>
-        </div>
+        <a href="javascript:history.back()" class="btn-goback">← Go Back</a>
     </div>
 
+    <!-- YouTube IFrame Player API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        // Removes taskbar and browser tab bar by triggering Native Browser Fullscreen Mode
-        function enableFullscreen() {
+        let player;
+
+        // Initialize the YouTube player
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: '9TCphIzY--g',
+                playerVars: {
+                    'start': 1055,        // Start at 17:35
+                    'autoplay': 1,
+                    'controls': 0,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'iv_load_policy': 3,
+                    'disablekb': 1,
+                    'modestbranding': 1,
+                    'loop': 1,
+                    'playlist': '9TCphIzY--g'
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Apply frame styling to match the background video
+            const iframe = document.getElementById('player');
+            iframe.classList.add('bg-video');
+            event.target.playVideo();
+        }
+
+        // Single click anywhere on screen enables Fullscreen & Audio (Bypasses Browser Restrictions)
+        document.body.addEventListener('click', function(e) {
+            // Avoid triggering when clicking the Go Back link directly
+            if (e.target.tagName.toLowerCase() === 'a') return;
+
+            // 1. Unmute and play sound
+            if (player && player.unMute) {
+                player.unMute();
+                player.setVolume(100);
+            }
+
+            // 2. Hide Taskbar and Browser Tabs (Native Fullscreen)
             const docEl = document.documentElement;
             if (docEl.requestFullscreen) {
                 docEl.requestFullscreen();
-            } else if (docEl.mozRequestFullScreen) { /* Firefox */
-                docEl.mozRequestFullScreen();
-            } else if (docEl.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            } else if (docEl.webkitRequestFullscreen) {
                 docEl.webkitRequestFullscreen();
-            } else if (docEl.msRequestFullscreen) { /* IE/Edge */
+            } else if (docEl.msRequestFullscreen) {
                 docEl.msRequestFullscreen();
             }
-        }
+        });
     </script>
 
 </body>
