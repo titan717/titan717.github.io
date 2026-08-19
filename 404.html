@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Founding Titan Eren Yeager</title>
+    <title>404 - Page Trampled</title>
     <style>
         * {
             margin: 0;
@@ -17,300 +17,141 @@
             font-family: 'Cinzel', 'Times New Roman', serif;
             overflow: hidden;
             background-color: #000000;
-            color: #f8fafc;
+            color: #ffffff;
         }
 
-        /* High Resolution Artwork Layer */
-        .wallpaper-bg {
+        /* Video Container - Cover the whole viewport */
+        .video-container {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 1;
-            background: url('https://images6.alphacoders.com/132/thumb-1920-1328670.jpeg') center center / cover no-repeat;
-            filter: brightness(0.7) contrast(1.15);
-            transition: transform 0.1s ease-out;
+            overflow: hidden;
+            pointer-events: none;
         }
 
-        /* Ambient Glow & Shadow Overlays */
-        .overlay-vignette {
+        /* YouTube iFrame Scaled to remove black bars */
+        .bg-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 Aspect Ratio */
+            min-height: 100vh;
+            min-width: 177.77vh;
+            transform: translate(-50%, -50%) scale(1.35);
+            pointer-events: none;
+            filter: brightness(0.7) contrast(1.15);
+        }
+
+        /* Subtle overlay to make text pop */
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: 
-                radial-gradient(circle at 50% 50%, transparent 20%, rgba(0, 0, 0, 0.85) 90%),
-                linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 40%, rgba(185, 28, 28, 0.3) 100%);
+            background: radial-gradient(circle at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.85) 90%);
             pointer-events: none;
         }
 
-        /* Animated Green Titan Eyes Glow Layer */
-        .eyes-glow {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 3;
-            background: radial-gradient(circle at 50% 28%, rgba(34, 197, 94, 0.25) 0%, transparent 25%);
-            mix-blend-mode: screen;
-            animation: pulse-eyes 3s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        /* Rising Heat Smoke & Steam */
-        .steam-smoke {
-            position: fixed;
-            bottom: -20%;
-            left: 0;
-            width: 100%;
-            height: 60vh;
-            z-index: 4;
-            background: linear-gradient(0deg, rgba(239, 68, 68, 0.2) 0%, rgba(0,0,0,0) 100%);
-            filter: blur(25px);
-            animation: pulse-steam 4s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-
-        /* Floating Crimson Embers Particle Overlay */
-        .embers {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fca5a5, rgba(0,0,0,0)),
-                radial-gradient(3px 3px at 80px 120px, #ef4444, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 150px 60px, #22c55e, rgba(0,0,0,0)),
-                radial-gradient(2.5px 2.5px at 220px 200px, #f97316, rgba(0,0,0,0));
-            background-repeat: repeat;
-            background-size: 350px 350px;
-            opacity: 0.85;
-            animation: float-embers 8s infinite linear;
-            pointer-events: none;
-        }
-
-        /* Lightning Canvas & Flash Overlays */
-        #lightning-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9;
-            pointer-events: none;
-        }
-
-        .lightning-flash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            background: #ffffff;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        /* Ambient Screen Rumbling */
-        .ambient-rumble {
-            animation: rumbling-earth 0.12s infinite alternate ease-in-out;
-        }
-
-        /* Content Container */
+        /* Center Content UI */
         .container {
             position: relative;
-            z-index: 6;
+            z-index: 3;
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             text-align: center;
-            padding: 0 20px;
+            padding: 60px 20px;
         }
 
-        .errorCode {
-            font-size: clamp(6rem, 16vw, 13rem);
+        .header-content {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .error-code {
+            font-size: clamp(6rem, 16vw, 12rem);
             font-weight: 900;
             letter-spacing: 0.05em;
             line-height: 1;
             color: #ffffff;
-            text-shadow: 
-                0 0 20px rgba(34, 197, 94, 0.8),
-                0 0 50px rgba(239, 68, 68, 0.6),
-                0 0 100px rgba(0, 0, 0, 0.9);
-            margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(239, 68, 68, 0.8), 0 0 80px rgba(0, 0, 0, 0.9);
         }
 
         h1 {
-            font-size: clamp(1rem, 2.5vw, 1.75rem);
-            font-weight: 400;
-            letter-spacing: 0.25em;
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
+            font-weight: 600;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: #fca5a5;
-            margin-bottom: 35px;
-            text-shadow: 0 0 15px rgba(239, 68, 68, 0.7);
+            margin-top: 10px;
+            text-shadow: 0 0 15px rgba(239, 68, 68, 0.9);
         }
 
-        .btn {
+        /* Bottom "Go Back" Navigation */
+        .bottom-nav {
+            margin-bottom: 20px;
+        }
+
+        .btn-goback {
             display: inline-block;
-            padding: 16px 42px;
-            font-size: 0.9rem;
+            padding: 14px 38px;
+            font-size: 0.95rem;
             font-weight: 700;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: #fef2f2;
-            background-color: rgba(10, 5, 5, 0.75);
-            border: 1px solid rgba(239, 68, 68, 0.7);
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(239, 68, 68, 0.8);
             border-radius: 2px;
             text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
-            backdrop-filter: blur(8px);
-            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
         }
 
-        .btn:hover {
+        .btn-goback:hover {
             color: #000000;
-            background-color: #22c55e;
-            border-color: #22c55e;
-            box-shadow: 0 0 45px rgba(34, 197, 94, 0.9);
+            background-color: #ef4444;
+            border-color: #ef4444;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.9);
             transform: translateY(-2px);
-        }
-
-        /* Animations */
-        @keyframes pulse-eyes {
-            0% { opacity: 0.2; transform: scale(0.95); }
-            100% { opacity: 0.7; transform: scale(1.05); }
-        }
-
-        @keyframes pulse-steam {
-            0% { opacity: 0.3; transform: translateY(0); }
-            100% { opacity: 0.7; transform: translateY(-30px); }
-        }
-
-        @keyframes float-embers {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-350px); }
-        }
-
-        @keyframes rumbling-earth {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            50% { transform: translate(-1px, -1px) rotate(-0.3deg); }
-            100% { transform: translate(-1px, 1px) rotate(0.3deg); }
-        }
-
-        @keyframes intense-shake {
-            10%, 90% { transform: translate3d(-8px, 6px, 0); }
-            20%, 80% { transform: translate3d(10px, -10px, 0); }
-            30%, 50%, 70% { transform: translate3d(-14px, 12px, 0); }
-            40%, 60% { transform: translate3d(14px, -12px, 0); }
-        }
-
-        @keyframes flash-anim {
-            0% { opacity: 1; background: #fef08a; }
-            20% { opacity: 1; background: #ffffff; }
-            100% { opacity: 0; background: #22c55e; }
         }
     </style>
 </head>
-<body class="ambient-rumble">
+<body>
 
-    <div class="wallpaper-bg" id="bg"></div>
-    <div class="overlay-vignette"></div>
-    <div class="eyes-glow"></div>
-    <div class="steam-smoke"></div>
-    <div class="embers"></div>
-
-    <div class="lightning-flash" id="flash"></div>
-    <svg id="lightning-canvas"></svg>
-
-    <div class="container">
-        <div class="errorCode">404</div>
-        <h1>I WILL KEEP MOVING FORWARD.</h1>
-        <a href="/" class="btn" id="transformBtn">Flee To Safety</a>
+    <!-- Background Video Clip from https://www.youtube.com/watch?v=9TCphIzY--g starting at 21:00 (1260 seconds) -->
+    <div class="video-container">
+        <iframe 
+            class="bg-video" 
+            src="https://www.youtube-nocookie.com/embed/9TCphIzY--g?start=1260&autoplay=1&mute=1&loop=1&playlist=9TCphIzY--g&controls=0&showinfo=0&rel=0&iv_load_policy=3&disablekb=1&modestbranding=1" 
+            title="Attack on Titan - Rumbling Speech Video Background" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media">
+        </iframe>
     </div>
 
-    <script>
-        const btn = document.getElementById('transformBtn');
-        const flash = document.getElementById('flash');
-        const body = document.body;
-        const bg = document.getElementById('bg');
-        const svg = document.getElementById('lightning-canvas');
+    <div class="overlay"></div>
 
-        // Subtle Mouse Parallax Effect
-        window.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 15;
-            const y = (e.clientY / window.innerHeight - 0.5) * 15;
-            bg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
-        });
+    <div class="container">
+        <div class="header-content">
+            <div class="error-code">404</div>
+            <h1>THIS PAGE HAS BEEN TRAMPLED</h1>
+        </div>
 
-        // Click Transformation Lightning Strike
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const rect = btn.getBoundingClientRect();
-            const targetX = rect.left + rect.width / 2;
-            const targetY = rect.top + rect.height / 2;
-
-            body.style.animation = 'intense-shake 0.8s cubic-bezier(.36,.07,.19,.97) both';
-
-            flash.style.animation = 'none';
-            void flash.offsetWidth;
-            flash.style.animation = 'flash-anim 0.9s ease-out forwards';
-
-            drawTitanLightning(targetX, targetY);
-
-            setTimeout(() => {
-                window.location.href = btn.getAttribute('href');
-            }, 800);
-        });
-
-        function drawTitanLightning(targetX, targetY) {
-            svg.innerHTML = '';
-            
-            for (let b = 0; b < 5; b++) {
-                let startX = targetX + (Math.random() * 300 - 150);
-                let startY = 0;
-                let pathStr = `M ${startX} ${startY}`;
-                
-                let curX = startX;
-                let curY = startY;
-                const steps = 14;
-                const dy = targetY / steps;
-
-                for (let i = 0; i < steps; i++) {
-                    curY += dy;
-                    curX += (Math.random() * 100 - 50);
-                    if (i === steps - 1) {
-                        curX = targetX;
-                        curY = targetY;
-                    }
-                    pathStr += ` L ${curX} ${curY}`;
-                }
-
-                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                path.setAttribute("d", pathStr);
-                path.setAttribute("fill", "none");
-                path.setAttribute("stroke", b % 2 === 0 ? "#ffffff" : "#fef08a");
-                path.setAttribute("stroke-width", b === 0 ? "8" : "3");
-                path.setAttribute("filter", "drop-shadow(0 0 18px #22c55e)");
-                
-                svg.appendChild(path);
-            }
-
-            setTimeout(() => {
-                svg.innerHTML = '';
-            }, 600);
-        }
-    </script>
+        <!-- Bottom Go Back Action -->
+        <div class="bottom-nav">
+            <a href="javascript:history.back()" class="btn-goback">← Go Back</a>
+        </div>
+    </div>
 
 </body>
 </html>
