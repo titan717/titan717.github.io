@@ -18,6 +18,7 @@
     --text: #f4f4f6;
     --text-muted: #8e8e9a;
     --accent: #ffffff;
+    --error: #ef4444;
     --font-heading: 'Space Grotesk', sans-serif;
     --font-body: 'Plus Jakarta Sans', sans-serif;
   }
@@ -30,6 +31,110 @@
     font-family: var(--font-body);
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  /* ---------- Login System Overlay ---------- */
+  #auth-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(8, 8, 10, 0.95);
+    backdrop-filter: blur(16px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #auth-overlay.hidden {
+    display: none;
+  }
+
+  .auth-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 30px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-align: center;
+  }
+
+  .auth-card h2 {
+    font-family: var(--font-heading);
+    font-size: 24px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .auth-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: -8px;
+  }
+
+  .auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+
+  .auth-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .auth-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .auth-input:focus {
+    border-color: var(--border-hover);
+  }
+
+  .auth-btn {
+    margin-top: 6px;
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .auth-btn:hover {
+    opacity: 0.9;
+  }
+
+  .auth-error {
+    color: var(--error);
+    font-size: 12px;
+    font-weight: 600;
+    display: none;
   }
 
   /* ---------- 5-Second Titan Rage Loading Screen ---------- */
@@ -182,7 +287,6 @@
     margin: 0 auto;
     padding: 0 24px 80px;
     display: grid;
-    /* Forces 3 columns on desktop screens */
     grid-template-columns: repeat(3, 1fr);
     gap: 28px;
     min-height: 40vh;
@@ -406,6 +510,25 @@
 </head>
 <body>
 
+<!-- Login Authentication Overlay -->
+<div id="auth-overlay">
+  <div class="auth-card">
+    <h2>Access Vault</h2>
+    <p>Please enter your credentials to unlock.</p>
+    <div class="auth-field">
+      <label for="username">Username</label>
+      <input type="text" id="username" class="auth-input" placeholder="Enter username">
+    </div>
+    <div class="auth-field">
+      <label for="password">Password</label>
+      <input type="password" id="password" class="auth-input" placeholder="Enter password">
+    </div>
+    <div class="auth-error" id="auth-error">Invalid username or password!</div>
+    <button class="auth-btn" onclick="authenticate()">Unlock</button>
+  </div>
+</div>
+
+<!-- Loading Screen -->
 <div id="loader">
   <div class="loader-title">Loading Vault...</div>
   <div class="progress-bar-container">
@@ -445,7 +568,47 @@
 </footer>
 
 <script>
+  // Authentication Logic
+  function authenticate() {
+    const userIn = document.getElementById('username').value;
+    const passIn = document.getElementById('password').value;
+    const errEl = document.getElementById('auth-error');
+
+    if (userIn === "amit" && passIn === "admin@123") {
+      document.getElementById('auth-overlay').classList.add('hidden');
+      startLoadingSequence();
+    } else {
+      errEl.style.display = 'block';
+    }
+  }
+
+  // Allow pressing Enter in password input to unlock
+  document.getElementById('password').addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') authenticate();
+  });
+
   const wallpapers = [
+    {
+      title: "Shingeki No Kyojin",
+      tag: "Attack on Titan",
+      img: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200",
+      fallback: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200",
+      link: "https://motionbgs.com/shingeki-no-kyojin"
+    },
+    {
+      title: "Fight Against The Titans",
+      tag: "Attack on Titan",
+      img: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200",
+      fallback: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1200",
+      link: "https://motionbgs.com/fight-against-thetitans"
+    },
+    {
+      title: "Mikasa Ackerman",
+      tag: "Attack on Titan",
+      img: "https://motionbgs.com/media/5180/mikasa-aot.jpg",
+      fallback: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1200",
+      link: "https://motionbgs.com/mikasa-ackerman-in-attack-on-titan"
+    },
     {
       title: "Dark King and Crown of Thorns",
       tag: "Fantasy",
@@ -559,8 +722,8 @@
   let currentFilter = 'All';
   let searchQuery = '';
 
-  // 5-Second (5000ms) Loader Timer
-  window.addEventListener('load', () => {
+  // 5-Second (5000ms) Loader Timer (Starts after correct login)
+  function startLoadingSequence() {
     const bar = document.getElementById('progress-bar');
     const text = document.getElementById('progress-text');
     const duration = 5000;
@@ -581,7 +744,7 @@
         }, 200);
       }
     }, intervalTime);
-  });
+  }
 
   function setupFilters() {
     const tags = ['All', ...new Set(wallpapers.map(w => w.tag))];
