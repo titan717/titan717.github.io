@@ -3,110 +3,196 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallpaper Picks — Made by Amit</title>
+<title>Cool Website by Amit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #090a0f;
-    --card-bg: rgba(22, 27, 38, 0.75);
-    --card-border: rgba(255, 255, 255, 0.12);
-    --gold: #ffd700;
-    --gold-glow: rgba(255, 215, 0, 0.35);
-    --neon-pink: #ff2a85;
-    --neon-purple: #8a2be2;
-    --neon-cyan: #00f2fe;
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
+    --bg: #0a0a0c;
+    --surface: #141417;
+    --border: #27272a;
+    --border-hover: #52525b;
+    --text: #f4f4f5;
+    --text-muted: #a1a1aa;
+    --accent: #ffffff;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background: var(--bg);
-    background-image: 
-      radial-gradient(circle at 10% 20%, rgba(255, 42, 133, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.12) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(138, 43, 226, 0.1) 0%, transparent 60%);
-    background-attachment: fixed;
-    color: var(--text-main);
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
     min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ---------- Game-Style Loading Screen ---------- */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s ease, visibility 0.6s;
+  }
+
+  #loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .loader-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    animation: pulse 1.5s infinite alternate;
+  }
+
+  .progress-bar-container {
+    width: 250px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--text);
+    transition: width 0.2s ease;
+  }
+
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    100% { opacity: 1; }
   }
 
   /* ---------- Header ---------- */
   header {
     text-align: center;
-    padding: 60px 20px 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    position: relative;
+    padding: 80px 20px 40px;
   }
 
-  .don-banner {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(28px, 6vw, 56px);
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    color: var(--gold);
-    text-transform: uppercase;
-    text-shadow: 
-      0 0 10px var(--gold-glow),
-      0 0 25px var(--gold-glow),
-      0 0 45px rgba(255, 215, 0, 0.5);
-    margin-bottom: 10px;
-    animation: pulse 3s infinite alternate;
-  }
-
-  @keyframes pulse {
-    0% { filter: drop-shadow(0 0 10px rgba(255,215,0,0.4)); }
-    100% { filter: drop-shadow(0 0 20px rgba(255,215,0,0.8)); }
-  }
-
-  .subtitle {
-    font-size: clamp(18px, 3vw, 26px);
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
     font-weight: 800;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 16px;
+    text-transform: uppercase;
   }
 
   header p {
     color: var(--text-muted);
-    font-size: 15px;
-    max-width: 600px;
+    font-size: 16px;
+    max-width: 500px;
     margin: 0 auto;
-    line-height: 1.6;
+    line-height: 1.5;
+  }
+
+  /* ---------- Controls (Search & Filters) ---------- */
+  .controls {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px 20px;
+    border-radius: 30px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .search-box:focus {
+    border-color: var(--border-hover);
+  }
+
+  .filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--border-hover);
+    color: var(--text);
+  }
+
+  .filter-btn.active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+    font-weight: 600;
   }
 
   /* ---------- Grid Layout ---------- */
   main {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 50px 24px 80px;
+    padding: 20px 24px 80px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-    gap: 28px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    min-height: 50vh;
   }
 
-  /* ---------- Glassmorphism Card ---------- */
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 18px;
+    padding: 40px;
+  }
+
+  /* ---------- Card Styling ---------- */
   .card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--card-border);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
   }
 
   .card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255, 42, 133, 0.5);
-    box-shadow: 0 12px 30px rgba(255, 42, 133, 0.2);
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
   }
 
   .thumb-wrap {
@@ -120,26 +206,26 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
   .card:hover .thumb-wrap img {
-    transform: scale(1.08);
+    transform: scale(1.05);
   }
 
   .tag {
     position: absolute;
     top: 12px;
     left: 12px;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: var(--neon-cyan);
+    background: rgba(10, 10, 12, 0.8);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--border);
+    color: var(--text);
     font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-weight: 500;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 5px 12px;
+    padding: 6px 12px;
     border-radius: 20px;
   }
 
@@ -152,9 +238,10 @@
   }
 
   .title {
+    font-family: 'Syne', sans-serif;
     font-size: 18px;
-    font-weight: 800;
-    color: var(--text-main);
+    font-weight: 700;
+    color: var(--text);
     line-height: 1.3;
   }
 
@@ -169,76 +256,71 @@
     text-align: center;
     text-decoration: none;
     font-size: 13px;
-    font-weight: 800;
-    padding: 12px 14px;
-    border-radius: 10px;
+    font-weight: 500;
+    padding: 10px 14px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    border: none;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    border: 1px solid transparent;
   }
 
   .btn-preview {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--text-main);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: var(--text);
+    border-color: var(--border);
   }
 
   .btn-preview:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: var(--neon-cyan);
-    color: var(--neon-cyan);
-    box-shadow: 0 0 12px rgba(0, 242, 254, 0.3);
+    border-color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .btn-open {
-    background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(255, 42, 133, 0.3);
+    background: var(--text);
+    color: var(--bg);
   }
 
   .btn-open:hover {
-    filter: brightness(1.2);
-    box-shadow: 0 6px 20px rgba(255, 42, 133, 0.5);
+    background: #d4d4d8;
   }
 
   /* ---------- Lightbox ---------- */
   .lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(4, 5, 8, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(10, 10, 12, 0.95);
+    backdrop-filter: blur(10px);
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 30px;
+    padding: 24px;
     z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
-  .lightbox.open { display: flex; }
+  .lightbox.open { 
+    display: flex; 
+    opacity: 1;
+  }
 
   .lightbox-inner {
-    max-width: 1100px;
+    max-width: 1200px;
     width: 100%;
-    background: rgba(22, 27, 38, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
 
   .lightbox img {
     width: 100%;
-    max-height: 70vh;
+    max-height: 75vh;
     object-fit: contain;
     border-radius: 12px;
     background: #000;
   }
 
   .lightbox-bar {
-    margin-top: 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -247,54 +329,70 @@
   }
 
   .lightbox-bar .title {
-    font-size: 20px;
-    color: var(--neon-cyan);
+    font-size: 24px;
   }
 
   .lightbox-close {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-main);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px 20px;
-    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 24px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s ease;
   }
 
   .lightbox-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #fff;
+    border-color: var(--text);
   }
 
-  /* ---------- Footer ---------- */
   footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 30px 20px 50px;
+    border-top: 1px solid var(--border);
+    padding: 40px 20px 60px;
     text-align: center;
     color: var(--text-muted);
     font-size: 14px;
   }
 
   .footer-credit {
-    margin-top: 8px;
-    font-weight: 800;
-    font-size: 16px;
-    color: var(--gold);
+    margin-top: 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text);
+    text-transform: uppercase;
     letter-spacing: 0.05em;
-    text-shadow: 0 0 10px var(--gold-glow);
   }
 </style>
 </head>
 <body>
 
+<!-- Loading Screen -->
+<div id="loader">
+  <div class="loader-title">Initiating sequence...</div>
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+</div>
+
 <header>
-  <div class="don-banner">AMIT IS THE DON</div>
-  <div class="subtitle">Live Wallpaper Vault</div>
-  <p>Select any animated theme below to preview instantly or head directly to the original page for downloads.</p>
+  <h1>Cool Website By Amit</h1>
+  <p>A curated collection of animated wallpapers. Filter, search, and preview in high resolution before downloading.</p>
 </header>
+
+<!-- Search & Filters -->
+<div class="controls">
+  <input type="text" id="searchInput" class="search-box" placeholder="Search wallpapers by title or tag...">
+  <div class="filters" id="filterContainer">
+    <!-- Filter tabs generate dynamically via JS -->
+  </div>
+</div>
 
 <main id="wallpaper-grid"></main>
 
+<!-- Lightbox Modal -->
 <div class="lightbox" id="lightbox">
   <div class="lightbox-inner">
     <img id="lightbox-img" src="" alt="Wallpaper Preview">
@@ -309,104 +407,220 @@
 </div>
 
 <footer>
-  <p>Thumbnails linked directly to original assets on <a href="https://motionbgs.com" target="_blank" style="color:var(--neon-cyan); text-decoration:none;">motionbgs.com</a>.</p>
-  <div class="footer-credit">(made by Amit.)</div>
+  <p>All wall art assets belong to their respective creators on <a href="https://motionbgs.com" target="_blank" style="color:var(--text); text-decoration:underline;">motionbgs.com</a>.</p>
+  <div class="footer-credit">Cool Website by Amit</div>
 </footer>
 
 <script>
-  // Dynamic Items Array including new requested links
+  /* =========================================
+     HOW TO ADD NEW LINKS EASILY:
+     Just copy one of the blocks inside the 
+     wallpapers array below. 
+     
+     If you don't know the exact .jpg link, 
+     leave it blank or use a random image, 
+     and the 'fallback' will load a cool 
+     placeholder image automatically so the 
+     site never breaks!
+  ========================================== */
+
   const wallpapers = [
+    // --- NEW LINKS YOU ADDED ---
+    {
+      title: "Minecraft Northern Light",
+      tag: "Minecraft",
+      img: "", // Intentionally empty so fallback activates
+      fallback: "https://images.unsplash.com/photo-1579033461387-adb47197eb43?q=80&w=1200", 
+      link: "https://motionbgs.com/minecraft-northern-light"
+    },
+    {
+      title: "Full Moon Elden Ring",
+      tag: "Gaming",
+      img: "",
+      fallback: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?q=80&w=1200",
+      link: "https://motionbgs.com/full-moon-elden-ring"
+    },
+    {
+      title: "Ghost of Tsushima Bloodfall",
+      tag: "Gaming",
+      img: "",
+      fallback: "https://images.unsplash.com/photo-1528359850684-245ed76e10f1?q=80&w=1200",
+      link: "https://motionbgs.com/ghost-of-tsushima-bloodfall"
+    },
+    {
+      title: "Minecraft Rainy Cabin",
+      tag: "Minecraft",
+      img: "",
+      fallback: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1200",
+      link: "https://motionbgs.com/minecraft-rainy-cabin"
+    },
+    {
+      title: "Path of Fallen Leaves",
+      tag: "Nature",
+      img: "",
+      fallback: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?q=80&w=1200",
+      link: "https://motionbgs.com/path-of-fallen-leaves"
+    },
+    {
+      title: "Red Ghost",
+      tag: "Atmospheric",
+      img: "",
+      fallback: "https://images.unsplash.com/photo-1509249738096-7a87bd04b503?q=80&w=1200",
+      link: "https://motionbgs.com/red-ghost"
+    },
+    // --- PREVIOUS LINKS ---
     {
       title: "Twilight at Mount Fuji",
-      tag: "Nature / Anime",
+      tag: "Nature",
       img: "https://motionbgs.com/media/9924/twilight-at-mount-fuji.3840x2160.jpg",
+      fallback: "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=1200",
       link: "https://motionbgs.com/twilight-at-mount-fuji"
     },
     {
       title: "King of Darkness",
       tag: "Fantasy",
       img: "https://motionbgs.com/media/9821/dark-king-and-the-crown-of-thorns.3840x2160.jpg",
-      link: "https://motionbgs.com/king-of-darkness"
+      fallback: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1200",
+      link: "https://motionbgs.com/dark-king-and-the-crown-of-thorns"
     },
     {
       title: "Serene Cherry Blossom Tree",
-      tag: "Atmospheric",
+      tag: "Anime",
       img: "https://motionbgs.com/media/9925/serene-cherry-blossom-tree.3840x2160.jpg",
+      fallback: "https://images.unsplash.com/photo-1522383225653-ed111181a951?q=80&w=1200",
       link: "https://motionbgs.com/serene-cherry-blossom-tree"
     },
     {
-      title: "Eren Yeager — Founding Titan",
-      tag: "Attack on Titan",
-      img: "https://motionbgs.com/media/990/eren-yeager-from-founding-titan-attack-on-titan.jpg",
-      link: "https://motionbgs.com/eren-yeager-from-founding-titan-attack-on-titan"
-    },
-    {
       title: "Shadow King — Sung Jin-Woo",
-      tag: "Solo Leveling",
+      tag: "Anime",
       img: "https://motionbgs.com/media/9692/shadow-king-sung-jin-woo.3840x2160.jpg",
+      fallback: "https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1200",
       link: "https://motionbgs.com/shadow-king-sung-jin-woo"
     },
     {
-      title: "Mikasa Ackerman",
-      tag: "Attack on Titan",
-      img: "https://motionbgs.com/media/5180/mikasa-aot.jpg",
-      link: "https://motionbgs.com/mikasa-aot"
-    },
-    {
-      title: "Titan Rage",
-      tag: "Attack on Titan",
-      img: "https://motionbgs.com/media/4608/titan-rage.jpg",
-      link: "https://motionbgs.com/titan-rage"
-    },
-    {
-      title: "Surviving",
-      tag: "The Last of Us",
-      img: "https://motionbgs.com/media/501/surviving-the-last-of-us.jpg",
-      link: "https://motionbgs.com/surviving-the-last-of-us"
-    },
-    {
       title: "The Arcade",
-      tag: "The Last of Us",
+      tag: "Gaming",
       img: "https://motionbgs.com/media/583/the-arcade-the-last-of-us.jpg",
+      fallback: "https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=1200",
       link: "https://motionbgs.com/the-arcade-the-last-of-us"
     }
   ];
 
-  // Render cards into DOM
+  // Logic Variables
   const grid = document.getElementById('wallpaper-grid');
-  
-  wallpapers.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="thumb-wrap">
-        <span class="tag">${item.tag}</span>
-        <img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.src='https://picsum.photos/800/500?random=${idx}'">
-      </div>
-      <div class="card-body">
-        <div class="title">${item.title}</div>
-        <div class="actions">
-          <button class="btn btn-preview" onclick="openLightbox('${item.img}', '${item.title.replace(/'/g, "\\'")}', '${item.link}')">Preview</button>
-          <a class="btn btn-open" href="${item.link}" target="_blank" rel="noopener noreferrer">Open</a>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
+  const filterContainer = document.getElementById('filterContainer');
+  const searchInput = document.getElementById('searchInput');
+  let currentFilter = 'All';
+  let searchQuery = '';
+
+  // 1. Game Style Loading Screen Logic
+  window.addEventListener('load', () => {
+    let progress = 0;
+    const bar = document.getElementById('progress-bar');
+    const interval = setInterval(() => {
+      progress += Math.floor(Math.random() * 20) + 10; // random jump
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        setTimeout(() => {
+          document.getElementById('loader').classList.add('hidden');
+        }, 400); // slight delay after hitting 100%
+      }
+      bar.style.width = progress + '%';
+    }, 150);
   });
 
-  // Lightbox Handler
-  function openLightbox(imgUrl, title, sourceLink) {
+  // 2. Setup Category Filters dynamically
+  function setupFilters() {
+    // Get unique tags
+    const tags = ['All', ...new Set(wallpapers.map(w => w.tag))];
+    
+    tags.forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn' + (tag === 'All' ? ' active' : '');
+      btn.textContent = tag;
+      btn.onclick = () => {
+        // Update active class
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        currentFilter = tag;
+        renderGrid();
+      };
+      filterContainer.appendChild(btn);
+    });
+  }
+
+  // 3. Render the Grid
+  function renderGrid() {
+    grid.innerHTML = ''; // clear current
+
+    // Filter logic
+    const filtered = wallpapers.filter(item => {
+      const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                            item.tag.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesTag = currentFilter === 'All' || item.tag === currentFilter;
+      return matchesSearch && matchesTag;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty-state">No wallpapers found matching your search.</div>`;
+      return;
+    }
+
+    filtered.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      // Select main img, or use fallback instantly if main is blank
+      const primaryImg = item.img ? item.img : item.fallback;
+
+      card.innerHTML = `
+        <div class="thumb-wrap">
+          <span class="tag">${item.tag}</span>
+          <img src="${primaryImg}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='${item.fallback}';">
+        </div>
+        <div class="card-body">
+          <div class="title">${item.title}</div>
+          <div class="actions">
+            <button class="btn btn-preview" onclick="openLightbox('${primaryImg}', '${item.fallback}', '${item.title.replace(/'/g, "\\'")}', '${item.link}')">Preview</button>
+            <a class="btn btn-open" href="${item.link}" target="_blank" rel="noopener noreferrer">Open Link</a>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  // 4. Search input event
+  searchInput.addEventListener('input', (e) => {
+    searchQuery = e.target.value;
+    renderGrid();
+  });
+
+  // 5. Lightbox Functions
+  function openLightbox(imgUrl, fallbackUrl, title, sourceLink) {
+    const lightbox = document.getElementById('lightbox');
     const imgEl = document.getElementById('lightbox-img');
+    
+    imgEl.onerror = function() {
+      this.onerror = null;
+      this.src = fallbackUrl;
+    };
     imgEl.src = imgUrl;
-    imgEl.onerror = () => { imgEl.src = 'https://picsum.photos/1200/800'; };
+
     document.getElementById('lightbox-title').textContent = title;
     document.getElementById('lightbox-open').href = sourceLink;
-    document.getElementById('lightbox').classList.add('open');
+    
+    lightbox.classList.add('open');
   }
 
   function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.getElementById('lightbox-img').src = '';
+    const lightbox = document.getElementById('lightbox');
+    lightbox.classList.remove('open');
+    setTimeout(() => {
+      document.getElementById('lightbox-img').src = '';
+    }, 300);
   }
 
   document.getElementById('lightbox').addEventListener('click', function(e) {
@@ -416,7 +630,11 @@
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeLightbox();
   });
-</script>
 
+  // Initialize
+  setupFilters();
+  renderGrid();
+
+</script>
 </body>
 </html>
